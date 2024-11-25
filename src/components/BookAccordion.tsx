@@ -39,7 +39,7 @@ export function BookAccordion({ book, openBook, setBook }: BookAccordionProps) {
       <div onClick={handleBookClick} className="w-full py-2 border-b cursor-pointer">
         <div className="w-full grid grid-cols-10 gap-4">
           <div className="col-span-1 flex items-center gap-2">
-            <ArrowDown w={20} h={20} />
+            {openBook === book.id ? <ArrowDown w={20} h={20} className="transform rotate-180" /> : <ArrowDown w={20} h={20} />}
             <span>{book.id}</span>
           </div>
           <div className="col-span-9 grid grid-cols-4 gap-4">
@@ -60,7 +60,7 @@ export function BookAccordion({ book, openBook, setBook }: BookAccordionProps) {
             <div className="flex items-end gap-2">
               <h2 className="text-xl font-bold">{book.title}</h2>
             </div>
-            <h4 className="font-semibold">by <span className="italic">{book.authors[0]}</span></h4>
+            <h4 className="font-semibold">by <span className="italic">{book.authors.join(", ")}</span></h4>
             <h3 className="text-base font-semibold text-gray-500">{book.publisher}</h3>
             <h2 className="text-lg font-semibold">Review</h2>
             <div className="flex flex-col gap-1">

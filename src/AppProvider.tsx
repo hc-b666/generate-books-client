@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { BACKEND_URL } from "./constants";
+import { debounce } from "lodash";
 
 export type Book = {
   id: number;
@@ -13,7 +14,7 @@ export type Book = {
 
 export type Lang = "en" | "pl" | "pt_BR";
 
-export const langs = [
+export const langs: { short: Lang; long: string }[] = [
   { short: "en", long: "English" },
   { short: "pl", long: "Polish" },
   { short: "pt_BR", long: "Portuguese (Brazil)" },
@@ -31,7 +32,7 @@ export type AppContextType = {
   setLike: (like: number) => void;
   setReview: (review: number) => void;
   setPage: (page: number) => void;
-  langs: { short: string; long: string }[];
+  langs: { short: Lang; long: string }[];
 };
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -53,23 +54,30 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [review, setReview] = useState(4.5);
   const [page, setPage] = useState(2);
 
-  const getBooks = async () => {
-    const res = await fetch(`${BACKEND_URL}?lang=${lang}&seed=${seed}&like=${like}&review=${review}&page=${page}`);
+  const getBooks = async (p: number) => {
+    const res = await fetch(`${BACKEND_URL}?lang=${lang}&seed=${seed}&like=${like}&review=${review}&page=${p}`);
     const data = await res.json();
-    setBooks(data);
+    setBooks(p => [...p, ...data]);
   };
 
   useEffect(() => {
-    getBooks();
-  }, [lang, seed, like, review, page]);
+    setBooks([]);
+    for (let p = 1; p <= page; p++) {
+      getBooks(p);
+    }
+  }, [lang, seed, like, review]);
 
   useEffect(() => {
-    const handleScroll = () => {
+    getBooks(page + 1);
+  }, [page]);
+
+  useEffect(() => {
+    const handleScroll = debounce(() => {
       if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 50) {
         setPage(p => p + 1);
       }
-    };
-
+    }, 300);
+  
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);

@@ -1,4 +1,4 @@
-export function ArrowDown({ w = 24, h = 24 }: { w?: number; h?: number }) {
+export function ArrowDown({ w = 24, h = 24, className }: { w?: number; h?: number, className?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,7 +10,7 @@ export function ArrowDown({ w = 24, h = 24 }: { w?: number; h?: number }) {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="lucide lucide-chevron-down"
+      className={`lucide lucide-chevron-down ${className}`}
     >
       <path d="m6 9 6 6 6-6" />
     </svg>
