@@ -3,6 +3,7 @@ import Select from "./Select";
 import { Lang, useAppContext } from "@/AppProvider";
 import { TableIcon } from "@/icons/TableIcon";
 import { GridIcon } from "@/icons/GridIcon";
+import seedrandom from "seedrandom";
 
 interface NavbarProps {
   view: "table" | "grid";
@@ -29,6 +30,14 @@ export default function Navbar({ view, setView }: NavbarProps) {
 
   const langValue = langs.find((l) => l.short === lang)?.long as string;
 
+  const generateRandomSeed = () => {
+    const min = 1;
+    const max = 999999;
+    const rng = seedrandom();
+    const randomSeed = Math.floor(rng() * (max - min + 1)) + min;
+    setSeed(randomSeed.toString());
+  };
+
   return (
     <nav className="container py-3 flex items-center justify-between">
       <Select
@@ -41,11 +50,11 @@ export default function Navbar({ view, setView }: NavbarProps) {
         <input
           type="text"
           value={seed}
-          onChange={(e) => setSeed(parseInt(e.target.value))}
+          onChange={(e) => setSeed(e.target.value)}
           className="w-full h-full p-1 border border-gray-500 rounded"
         />
 
-        <button className="hover:bg-gray-200 p-1 rounded absolute right-1 top-1/2 -translate-y-1/2">
+        <button onClick={generateRandomSeed} className="hover:bg-gray-200 p-1 rounded absolute right-1 top-1/2 -translate-y-1/2">
           <Shuffle w={16} h={16} />
         </button>
       </div>
@@ -54,7 +63,7 @@ export default function Navbar({ view, setView }: NavbarProps) {
         <input
           type="text"
           value={like}
-          onChange={(e) => setLike(parseFloat(e.target.value))}
+          onChange={(e) => setLike(e.target.value)}
           className="w-full h-full p-1 border border-gray-500 rounded"
         />
       </div>
@@ -63,7 +72,7 @@ export default function Navbar({ view, setView }: NavbarProps) {
         <input
           type="text"
           value={review}
-          onChange={(e) => setReview(parseInt(e.target.value))}
+          onChange={(e) => setReview(e.target.value)}
           className="w-full h-full p-1 border border-gray-500 rounded"
         />
       </div>

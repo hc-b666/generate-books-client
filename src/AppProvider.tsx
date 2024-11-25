@@ -23,14 +23,14 @@ export const langs: { short: Lang; long: string }[] = [
 export type AppContextType = {
   books: Book[];
   lang: Lang;
-  seed: number;
-  like: number;
-  review: number;
+  seed: string;
+  like: string;
+  review: string;
   page: number;
   setLang: (lang: Lang) => void;
-  setSeed: (seed: number) => void;
-  setLike: (like: number) => void;
-  setReview: (review: number) => void;
+  setSeed: (seed: string) => void;
+  setLike: (like: string) => void;
+  setReview: (review: string) => void;
   setPage: (page: number) => void;
   langs: { short: Lang; long: string }[];
 };
@@ -49,9 +49,9 @@ export const useAppContext = () => {
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [books, setBooks] = useState<Book[]>([]);
   const [lang, setLang] = useState<Lang>("en");
-  const [seed, setSeed] = useState(42);
-  const [like, setLike] = useState(3.5);
-  const [review, setReview] = useState(4.5);
+  const [seed, setSeed] = useState("42");
+  const [like, setLike] = useState("3.5");
+  const [review, setReview] = useState("4.5");
   const [page, setPage] = useState(2);
 
   const getBooks = async (p: number) => {
