@@ -61,10 +61,14 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    setBooks([]);
-    for (let p = 1; p <= page; p++) {
-      getBooks(p);
-    }
+    const fetchData = async () => {
+      setBooks([]);
+      for (let p = 1; p <= page; p++) {
+        await getBooks(p);
+      }
+    };
+
+    fetchData();
   }, [lang, seed, like, review]);
 
   useEffect(() => {
